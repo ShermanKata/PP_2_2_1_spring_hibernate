@@ -16,14 +16,14 @@ public class UserDaoImp implements UserDao {
    private SessionFactory sessionFactory;
 
    @Override
-   public void add(User user) {
+   public void addUser(User user) {
       sessionFactory.getCurrentSession().save(user);
    }
 
    @Override
    public User getUser(String model, int series) {
-      String hql = "from User as user left outer join fetch user.car as car where car.model=:model and car.series=:series";
-      Query query = sessionFactory.getCurrentSession().createQuery(hql);
+      Query query = sessionFactory.getCurrentSession()
+              .createQuery("from User as user left outer join fetch user.car as car where car.model=:model and car.series=:series");
       query.setParameter("model", model);
       query.setParameter("series", series);
       return (User) query.getSingleResult();
@@ -31,7 +31,7 @@ public class UserDaoImp implements UserDao {
 
    @Override
    @SuppressWarnings("unchecked")
-   public List<User> listUsers() {
+   public List<User> getListOfUsers() {
       TypedQuery<User> query=sessionFactory.getCurrentSession().createQuery("from User");
       return query.getResultList();
    }
